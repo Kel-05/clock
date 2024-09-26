@@ -2,7 +2,7 @@
 # Compiler flags
 #
 CC = gcc
-LIBS = -lncurses
+LIBS = -lncurses -lm
 CFLAGS = -Wall -Wextra
 
 #
