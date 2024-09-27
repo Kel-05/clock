@@ -1,11 +1,6 @@
-#include <curses.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #include <unistd.h>
 #include <math.h>
-#include <pthread.h>
 #include "clock.h"
 
 void cntr_printw(WINDOW *win, char *input, int yoffset, int xoffset) {
