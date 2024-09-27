@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra
 #
 # Project files
 #
-SRCS = main.c
+SRCS = main.c clock.c
 OBJS = $(SRCS:.c=.o)
 EXE = clock
 
