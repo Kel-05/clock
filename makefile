@@ -10,7 +10,7 @@ CFLAGS = -Wall -Wextra
 #
 SRCS = main.c clock.c
 OBJS = $(SRCS:.c=.o)
-EXE = clock
+EXE = nclock
 
 #
 # Debug build settings

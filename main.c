@@ -13,7 +13,7 @@
 void help(FILE *fdesc, char *progname) {
   fprintf(fdesc, "Usage: %s [OPTIONS]\n\n"
 	  "  -h\tprint this help message\n"
-	  "  -s\tsine wave\n", progname);
+	  "  -s\tsine wave\n\n", progname);
 }
 
 void sine_clock(WINDOW *win, char *input, struct st_time *st_time) {
