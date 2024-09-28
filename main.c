@@ -1,34 +1,60 @@
-#include <unistd.h>
 #include <pthread.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include "clock.h"
 
+#define INPUT "%02d:%02d:%02d"
+#define REFRESH_RATE 16666
+#define YSPEED 0.1
+#define XSPEED 2
+#define LEN 9
 
-void help() {
-  puts("Usage: clock [OPTIONS]\n"
-       "  -h\tprint this help message\n"
-       "  -s\tsine wave");
+void help(FILE *fdesc, char *progname) {
+  fprintf(fdesc, "Usage: %s [OPTIONS]\n\n"
+	  "  -h\tprint this help message\n"
+	  "  -s\tsine wave\n", progname);
+}
+
+void sine_clock(WINDOW *win, char *input, struct st_time *st_time) {
+  size_t bufsize = strlen(input)+1;
+  char buf[bufsize];
+  double angle = 0;
+  pthread_t clock;
+  int x = 0;
+
+  time(&st_time->rawtime);
+  localtime_r(&st_time->rawtime, &st_time->ftime);
+  
+  pthread_create(&clock, NULL, thread_update_clock, st_time);
+  
+  while(1) {
+    snprintf(buf, bufsize, input, st_time->ftime.tm_hour, st_time->ftime.tm_min, st_time->ftime.tm_sec);
+    clear();
+    mvprintw_sine(win, buf, &angle, &x, YSPEED, XSPEED);
+    refresh();
+    usleep(REFRESH_RATE);
+  }
 }
 
 int main(int argc, char **argv) {
   struct st_time st_time;
-  size_t bufsize;
-  pthread_t clock;
-  double angle = 0;
-  int x = 0;
-  char c;
+  char c, sineflag = 0;
+  char buf[LEN];
 
   opterr = 0;
   
   while((c = getopt(argc, argv, "hs")) != -1) {
     switch(c) {
       case 's':
+	sineflag = 1;
         break;
       case 'h':
-	help();
+	help(stdout, argv[0]);
 	return 0;
 	break;
       default:
-	help();
+	help(stderr, argv[0]);
 	return 1;
     }
   }
@@ -39,22 +65,18 @@ int main(int argc, char **argv) {
   }
   cbreak();
   noecho();
-
-  time(&st_time.rawtime);
-  localtime_r(&st_time.rawtime, &st_time.ftime);
-
-  char fstr[] = "%02d:%02d:%02d";
-  bufsize = snprintf(NULL, 0, fstr, st_time.ftime.tm_hour, st_time.ftime.tm_min, st_time.ftime.tm_sec);
-  char buf[bufsize];
-
-  pthread_create(&clock, NULL, thread_update_clock, &st_time);
+  curs_set(0);
+ 
+  if(sineflag) sine_clock(stdscr, INPUT, &st_time);
   
   while(1) {
-    snprintf(buf, bufsize+1, fstr, st_time.ftime.tm_hour, st_time.ftime.tm_min, st_time.ftime.tm_sec);
+    time(&st_time.rawtime);
+    localtime_r(&st_time.rawtime, &st_time.ftime);
+    snprintf(buf, LEN, INPUT, st_time.ftime.tm_hour, st_time.ftime.tm_min, st_time.ftime.tm_sec);
     clear();
-    mvprintw_sine(stdscr, &angle, &x, buf);
+    cntr_printw(stdscr, buf, 0, 0);
     refresh();
-    usleep(75 * 1000);
+    sleep(1);
   }
 
   endwin();

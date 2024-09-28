@@ -10,9 +10,9 @@ struct st_time {
 };
 
 void cntr_printw(WINDOW *win, char *input, int yoffset, int xoffset);
-void mvprintw_sine(WINDOW *win, double *angle, int *x, char *input);
+void mvprintw_sine(WINDOW *win, char *input, double *angle, int *x, double yspeed, int xspeed);
 void cntr_printw_multi(WINDOW *win, char *input, size_t size);
-int sgets(char *str, size_t size, char **input);
+size_t sgets(char *str, size_t size, char **input);
 void *thread_update_clock(void *input);
 
 #endif

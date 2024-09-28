@@ -11,10 +11,10 @@ void cntr_printw(WINDOW *win, char *input, int yoffset, int xoffset) {
   mvprintw(cntr_row, cntr_col, "%s\n", input);
 }
 
-int sgets(char *str, size_t size, char **input)
+size_t sgets(char *str, size_t size, char **input)
 {
   char *next = *input, bogostr[size];
-  int numread = 0;
+  size_t numread = 0;
   if(str == NULL) str = bogostr;
   
   while(numread < size && *next) {
@@ -48,14 +48,18 @@ void cntr_printw_multi(WINDOW *win, char *input, size_t size) {
   }
 }
 
-void mvprintw_sine(WINDOW *win, double *angle, int *x, char *input) {
+void mvprintw_sine(WINDOW *win, char *input, double *angle, int *x, double yspeed, int xspeed) {
   int xmax, y;
   getmaxyx(win, y, xmax);
+  
+  if(yspeed == 0) yspeed = 0.1;
+  if(xspeed == 0) xspeed = 1;
   if(*x > xmax) *x = 0;
+
   y = (y + y*sin(*angle))/2;
-  *angle += 0.2;
+  *angle += yspeed;
   mvprintw(y, *x, "%s\n", input);
-  *x += 2;
+  *x += xspeed;
 }
 
 
