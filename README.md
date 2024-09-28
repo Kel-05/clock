@@ -11,7 +11,7 @@ cd nclock
 make
 ```
 
-The binary, 'nclock', will be located in the 'out' directory.
+The binary `nclock` will be located in the `out` directory.
 
 ```
 cd out
