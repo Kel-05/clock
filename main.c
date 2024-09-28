@@ -2,12 +2,36 @@
 #include <pthread.h>
 #include "clock.h"
 
-int main(void) {
+
+void help() {
+  puts("Usage: clock [OPTIONS]\n"
+       "  -h\tprint this help message\n"
+       "  -s\tsine wave");
+}
+
+int main(int argc, char **argv) {
   struct st_time st_time;
   size_t bufsize;
   pthread_t clock;
   double angle = 0;
   int x = 0;
+  char c;
+
+  opterr = 0;
+  
+  while((c = getopt(argc, argv, "hs")) != -1) {
+    switch(c) {
+      case 's':
+        break;
+      case 'h':
+	help();
+	return 0;
+	break;
+      default:
+	help();
+	return 1;
+    }
+  }
   
   if(initscr() == NULL) {
     fprintf(stderr, "Error: initscr(): could not initialize screen");

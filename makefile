@@ -57,7 +57,7 @@ $(RELDIR)/%.o: %.c
 	$(CC) -c $(CFLAGS) $(RELCFLAGS) -o $@ $<
 
 run:
-	./$(RELEXE)
+	./$(RELEXE) $(arg)
 
 #
 # Other rules
