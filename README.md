@@ -21,7 +21,7 @@ cd out
 ## Usage
 
 ```
-Usage: %s [OPTIONS]
+Usage: nclock [OPTIONS]
   -h    print this help message
   -s    sine wave
 ```
