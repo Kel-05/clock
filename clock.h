@@ -1,5 +1,5 @@
-#ifndef CLOCK_H_
-#define CLOCK_H_
+#ifndef CLOCK_H
+#define CLOCK_H
 
 #include <curses.h>
 #include <time.h>
